@@ -107,14 +107,43 @@ Claude 的交付报告 → Codex 终审 → 不够 8 分？不准发给老板
 
 ### 前提
 
-- [Claude Code](https://claude.ai/code) 已安装
-- [Codex CLI](https://github.com/openai/codex) 已安装并登录
+- **Node.js ≥ 18**（Claude Code 和 Codex CLI 都依赖它）
+- **OpenAI 账号**（ChatGPT Plus / Pro / Team / Enterprise，用于 Codex QA 审查）
 
-### 安装
+如果还没有 OpenAI 账号，QA 审查会自动降级为 Claude Opus Agent，不影响使用。
+
+### 一键安装
 
 ```bash
-# 把牛马公司命令复制到 Claude Code 的 commands 目录
-cp 牛马公司.md ~/.claude/commands/牛马公司.md
+# 1. 检查 Node.js（没有就装）
+node --version 2>/dev/null || (curl -fsSL https://nodejs.org/dist/v22.12.0/node-v22.12.0-darwin-arm64.tar.gz | sudo tar -xz --strip-components=1 -C /usr/local)
+
+# 2. 装 Claude Code（已装则跳过）
+npm list -g @anthropic-ai/claude-code 2>/dev/null \
+  && echo "✅ Claude Code 已安装" \
+  || npm install -g @anthropic-ai/claude-code
+
+# 3. 装 Codex CLI（已装则跳过）
+npm list -g @openai/codex 2>/dev/null \
+  && echo "✅ Codex CLI 已安装" \
+  || npm install -g @openai/codex
+
+# 4. 登录 Codex（绑定你的 OpenAI 账号）
+codex login
+
+# 5. 安装牛马公司命令
+curl -sL https://raw.githubusercontent.com/Tino-Tian/niuma-corp/main/牛马公司.md \
+  -o ~/.claude/commands/牛马公司.md \
+  && echo "🐂🐎 牛马公司已就绪！"
+```
+
+或者一行梭哈：
+
+```bash
+npm install -g @anthropic-ai/claude-code @openai/codex \
+  && codex login \
+  && curl -sL https://raw.githubusercontent.com/Tino-Tian/niuma-corp/main/牛马公司.md -o ~/.claude/commands/牛马公司.md \
+  && echo "🐂🐎 牛马上岗！"
 ```
 
 ### 使用
@@ -123,7 +152,7 @@ cp 牛马公司.md ~/.claude/commands/牛马公司.md
 # Claude Code 中直接调用
 /牛马公司 做一个命令行待办事项工具，支持增删改查
 
-# 或者在后续迭代
+# 后续迭代
 /牛马公司 在 /Users/me/my-blog 里加评论功能，支持匿名评论和回复
 
 # 恢复中断

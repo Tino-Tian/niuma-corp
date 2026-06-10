@@ -183,7 +183,7 @@ npm install -g @anthropic-ai/claude-code @openai/codex \
 
 ---
 
-## 🧬 技术栈
+## 🧬 技术线
 
 | 层 | 技术 |
 |----|------|
